@@ -38,7 +38,7 @@ public class Unit : NetworkBehaviour
     {
         //TODO
         ServerOnUnitSpawned?.Invoke(this);
-        //Also runs secondary method when primary method is called
+        //Subscribe to event
         health.ServerOnDie += ServerHandleDie;
     }
 
@@ -46,7 +46,8 @@ public class Unit : NetworkBehaviour
     {
         //TODO
         ServerOnUnitDespawned?.Invoke(this);
-        health.ServerOnDie += ServerHandleDie;
+        //Unsubscribe from event
+        health.ServerOnDie -= ServerHandleDie;
     }
 
     //[Server] means this method can only be called by the server

@@ -11,24 +11,29 @@ public class HealthDisplay : MonoBehaviour
 
     private void Awake()
     {
+        //Subscribe to event
         health.ClientOnHealthUpdate += HandleHealthUpdated;
     }
 
     private void OnDestroy()
     {
+        //Unsubscribe from event
         health.ClientOnHealthUpdate -= HandleHealthUpdated;
     }
 
+    //Render health bar on mouse over
     private void OnMouseEnter()
     {
         healthBarParent.SetActive(true);
     }
 
+    //Disable health bar on mouse exit
     private void OnMouseExit()
     {
         healthBarParent.SetActive(false);
     }
 
+    //Update health bar UI using current health
     private void HandleHealthUpdated(int currentHealth, int maxHealth)
     {
         healthBarImage.fillAmount = (float)currentHealth / maxHealth;

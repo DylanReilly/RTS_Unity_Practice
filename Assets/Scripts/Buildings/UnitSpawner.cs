@@ -14,11 +14,13 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
 
     public override void OnStartServer()
     {
+        //Subscribe to event
         health.ServerOnDie += ServerHandleDie;
     }
 
     public override void OnStopServer()
     {
+        //Unsubscribe from event
         health.ServerOnDie -= ServerHandleDie;
     }
 
@@ -31,20 +33,26 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
     [Command]
     private void CmdSpawnUnit()
     {
+        //Spawn unit using unit spawn point component
         GameObject unitInstance = Instantiate(unitPrefab, 
             unitSpawnPoint.position, 
             unitSpawnPoint.rotation);
 
+        //Spawn unit on the network
         NetworkServer.Spawn(unitInstance, connectionToClient);
     }
     #endregion
 
     #region Client
+    //Spawn unit when clicking on base
     public void OnPointerClick(PointerEventData eventData)
     {
+        //If the left button wasnt pressed do nothing
         if (eventData.button != PointerEventData.InputButton.Left) { return; }
+        //If the player doesnt have authority over the target do nothing
         if(!hasAuthority) { return; }
 
+        //Spawn unit
         CmdSpawnUnit();
     }
 

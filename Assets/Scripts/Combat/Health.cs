@@ -8,6 +8,7 @@ public class Health : NetworkBehaviour
 {
     [SerializeField] private int maxHealth = 100;
 
+    //TODO
     [SyncVar(hook = nameof(HandleHealthUpdated))]
     private int currentHealth;
 
@@ -16,6 +17,7 @@ public class Health : NetworkBehaviour
     public event Action<int, int> ClientOnHealthUpdate;
 
     #region Server
+    //When a unit is create set its health to max
     public override void OnStartServer()
     {
         currentHealth = maxHealth;
@@ -24,17 +26,22 @@ public class Health : NetworkBehaviour
     [Server]
     public void DealDamage(int damageAmount)
     {
+        //If unit has no health do nothing
         if (currentHealth == 0) { return; }
 
+        //Reduce health by damage amount
         currentHealth -= damageAmount;
 
+        //if the health drops below 0, set it to 0
         if (currentHealth < 0)
         {
             currentHealth = 0;
         }
 
+        //If unit is not dead, stop here
         if (currentHealth != 0) { return; }
 
+        //TODO
         ServerOnDie?.Invoke();
 
     }
@@ -42,6 +49,7 @@ public class Health : NetworkBehaviour
 
     #region Client
 
+    //Update health on clients
     private void HandleHealthUpdated(int oldHealth, int newHealth)
     {
         ClientOnHealthUpdate?.Invoke(newHealth, maxHealth);

@@ -14,13 +14,16 @@ public class UnitBase : NetworkBehaviour
     #region Server
     public override void OnStartServer()
     {
+        //Subscribe to event
         health.ServerOnDie += HandleBaseDeath;
-
+        
+        //TODO
         ServerOnBaseSpawned?.Invoke(this);
     }
 
     public override void OnStopServer()
     {
+        //Unsubscribe from event
         health.ServerOnDie -= HandleBaseDeath;
 
         ServerOnBaseDespawned?.Invoke(this);
