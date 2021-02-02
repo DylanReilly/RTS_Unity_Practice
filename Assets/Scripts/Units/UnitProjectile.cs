@@ -12,9 +12,11 @@ public class UnitProjectile : NetworkBehaviour
 
     void Start()
     {
+        //sets the velocity of the projectile using the launch force
         rb.velocity = transform.forward * launchForce;
     }
 
+    //TODO
     public override void OnStartServer()
     {
         Invoke(nameof(DestroySelf), destroyAfterSeconds);
@@ -23,11 +25,13 @@ public class UnitProjectile : NetworkBehaviour
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
+        //Check if target has the same client connection as projectile (friendly fire) if true, do nothing
         if (other.TryGetComponent<NetworkIdentity>(out NetworkIdentity networkIdentity))
         {
             if (networkIdentity.connectionToClient == connectionToClient) { return; }
         }
 
+        //If target has health component, reduce health and destroy projectile
         if (other.TryGetComponent<Health>(out Health health))
         {
             health.DealDamage(damageToDeal);
@@ -36,6 +40,7 @@ public class UnitProjectile : NetworkBehaviour
         }
     }
 
+    //destroys projectile
     [Server]
     private void DestroySelf()
     {

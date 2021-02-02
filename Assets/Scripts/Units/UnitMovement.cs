@@ -13,28 +13,35 @@ public class UnitMovement : NetworkBehaviour
     [ServerCallback]
     private void Update()
     {
+        //Gets target coordinates from targetable component
         Targetable target = targeter.getTarget();
         if (target != null)
         {
+            //checks if the unit is too far away from its target to attack, if so move unit to target position
             if ((target.transform.position - transform.position).sqrMagnitude > chaseRange * chaseRange)
             {
                 agent.SetDestination(target.transform.position);
             }
+            //If the unit has reached its waypoint
             else if (agent.hasPath)
             {
+                //reset path
                 agent.ResetPath();
             }
 
             return;
         }
 
+        //if unit has no path, return
         if (!agent.hasPath) { return; }
 
+        //Stop unit move if its "close enough" to the waypoint
         if (agent.remainingDistance > agent.stoppingDistance) { return; }
 
         agent.ResetPath();
     }
 
+    //TODO
     [Command]
     public void CmdMove(Vector3 position)
     {
