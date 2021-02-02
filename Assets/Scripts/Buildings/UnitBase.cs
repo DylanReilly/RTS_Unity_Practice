@@ -17,7 +17,7 @@ public class UnitBase : NetworkBehaviour
         //Subscribe to event
         health.ServerOnDie += HandleBaseDeath;
         
-        //TODO
+        //Invoke triggers the event
         ServerOnBaseSpawned?.Invoke(this);
     }
 
