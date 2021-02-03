@@ -5,12 +5,18 @@ using Mirror;
 
 public class RTSPlayer : NetworkBehaviour
 {
-    [SerializeField] private List<Unit> myUnits = new List<Unit>();
+    private List<Unit> myUnits = new List<Unit>();
+    private List<Building> myBuildings = new List<Building>();
 
     //Returns a list of the players units
     public List<Unit> GetMyUnits()
     {
         return myUnits;
+    }
+
+    public List<Building> GetMyBuildings()
+    {
+        return myBuildings;
     }
 
     #region Server
@@ -20,6 +26,8 @@ public class RTSPlayer : NetworkBehaviour
     {
         Unit.ServerOnUnitSpawned += ServerhandleUnitSpawned;
         Unit.ServerOnUnitDespawned += ServerhandleUnitDespawned;
+        Building.ServerOnBuildingSpawned += ServerHandleBuildingSpawned;
+        Building.ServerOnBuildingDespawned += ServerHandleBuildingDespawned;
     }
 
     //Unsubscribes from events, stops listening
@@ -27,6 +35,8 @@ public class RTSPlayer : NetworkBehaviour
     {
         Unit.ServerOnUnitSpawned -= ServerhandleUnitSpawned;
         Unit.ServerOnUnitDespawned -= ServerhandleUnitDespawned;
+        Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
+        Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
     }
 
     //Adds unit to specific players list
@@ -46,6 +56,23 @@ public class RTSPlayer : NetworkBehaviour
         myUnits.Remove(unit);
     }
 
+    //Adds building to specific players list
+    private void ServerHandleBuildingSpawned(Building building)
+    {
+        //Checks the units client ID and only gives authority to the matching client
+        if (building.connectionToClient.connectionId != connectionToClient.connectionId) { return; }
+
+        myBuildings.Add(building);
+    }
+
+    //Removes building from specific players list
+    private void ServerHandleBuildingDespawned(Building building)
+    {
+        if (building.connectionToClient.connectionId != connectionToClient.connectionId) { return; }
+
+        myBuildings.Remove(building);
+    }
+
     #endregion
 
     #region Client
@@ -58,6 +85,8 @@ public class RTSPlayer : NetworkBehaviour
 
         Unit.AuthorityOnUnitSpawned += AuthorityhandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned += AuthorityhandleUnitDespawned;
+        Building.AuthorityOnBuildingSpawned += AuthorityHandleBuildingSpawned;
+        Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
     }
 
     //Unsubscribe from events
@@ -68,6 +97,8 @@ public class RTSPlayer : NetworkBehaviour
 
         Unit.AuthorityOnUnitSpawned -= AuthorityhandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned -= AuthorityhandleUnitDespawned;
+        Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
+        Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
     }
 
     //Add unit to player list
@@ -80,6 +111,18 @@ public class RTSPlayer : NetworkBehaviour
     private void AuthorityhandleUnitDespawned(Unit unit)
     {
         myUnits.Remove(unit);
+    }
+
+    //Add Building to player list
+    private void AuthorityHandleBuildingSpawned(Building building)
+    {
+        myBuildings.Add(building);
+    }
+
+    //Remove Building from player list
+    private void AuthorityHandleBuildingDespawned(Building building)
+    {
+        myBuildings.Remove(building);
     }
 
     #endregion
