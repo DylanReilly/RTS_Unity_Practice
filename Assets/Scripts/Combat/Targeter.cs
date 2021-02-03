@@ -7,6 +7,22 @@ public class Targeter : NetworkBehaviour
 {
     private Targetable target;
 
+    public override void OnStartServer()
+    {
+        UnitBase.ServerOnPlayerDie += ServerHandlePlayerDie;
+    }
+
+    public override void OnStopServer()
+    {
+        UnitBase.ServerOnPlayerDie -= ServerHandlePlayerDie;
+    }
+
+    private void ServerHandlePlayerDie(int connectionID)
+    { 
+        if(connectionToClient.connectionId != connectionID) { return; }
+
+        ClearTarget();
+    }
     //Returns the current target
     public Targetable getTarget()
     {

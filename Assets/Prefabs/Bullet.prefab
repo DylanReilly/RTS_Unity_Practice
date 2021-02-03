@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3544457701236756548}
   - component: {fileID: 3865210675668645385}
   - component: {fileID: 1128236498504173137}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,6 +129,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   rb: {fileID: 1128236498504173137}
+  damageToDeal: 20
   destroyAfterSeconds: 5
   launchForce: 10
 --- !u!54 &1128236498504173137

@@ -6,23 +6,22 @@ using UnityEngine;
 
 public class GameOverHandler : NetworkBehaviour
 {
+    public static event Action ServerOnGameOver;
+
     public static event Action<string> ClientOnGameOver;
 
-    //Creates list of bases
     private List<UnitBase> bases = new List<UnitBase>();
 
     #region Server
 
     public override void OnStartServer()
     {
-        //Subscribes to events
         UnitBase.ServerOnBaseSpawned += ServerHandleBaseSpawned;
         UnitBase.ServerOnBaseDespawned += ServerHandleBaseDespawned;
     }
 
     public override void OnStopServer()
     {
-        //Unsubscribes from events
         UnitBase.ServerOnBaseSpawned -= ServerHandleBaseSpawned;
         UnitBase.ServerOnBaseDespawned -= ServerHandleBaseDespawned;
     }
@@ -38,14 +37,13 @@ public class GameOverHandler : NetworkBehaviour
     {
         bases.Remove(unitBase);
 
-        //If there are more than 1 bases, do nothing. Otherwise end the game
         if (bases.Count != 1) { return; }
 
-        //When there is only 1 base left get its owners ID
-        int playerID = bases[0].connectionToClient.connectionId;
+        int playerId = bases[0].connectionToClient.connectionId;
 
-        //$ allows insertion of variables inside {} without using +
-        RpcGameOver($"Player {playerID}");
+        RpcGameOver($"Player {playerId}");
+
+        ServerOnGameOver?.Invoke();
     }
 
     #endregion
@@ -55,7 +53,6 @@ public class GameOverHandler : NetworkBehaviour
     [ClientRpc]
     private void RpcGameOver(string winner)
     {
-        //Triggers GameOver event
         ClientOnGameOver?.Invoke(winner);
     }
 

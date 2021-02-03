@@ -24,14 +24,18 @@ public class UnitSelectionHandler : MonoBehaviour
         //set camera to be main camera for raycasts
         mainCamera = Camera.main;
 
-        //Subscribe to event
+        //Subscribe to events
         Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawn;
+        //This event is used to stop a dead player selecting units
+        GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
     }
 
     private void OnDestroy()
     {
         //Unsubscribe from event
         Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawn;
+
+        GameOverHandler.ClientOnGameOver -= ClientHandleGameOver;
     }
 
     private void Update()
@@ -154,5 +158,11 @@ public class UnitSelectionHandler : MonoBehaviour
     private void AuthorityHandleUnitDespawn(Unit unit)
     {
         SelectedUnits.Remove(unit);
+    }
+
+    private void ClientHandleGameOver(string winnerName)
+    {
+        //Disables this script, which in turn disables the update loop and stops player interacting
+        enabled = false;   
     }
 }

@@ -279,12 +279,12 @@ GameObject:
   - component: {fileID: 4273341707748442507}
   - component: {fileID: 4280630238691087866}
   m_Layer: 5
-  m_Name: Game Over Convas
+  m_Name: Game Over Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6639635349824384680
 RectTransform:
   m_ObjectHideFlags: 0

@@ -10,6 +10,22 @@ public class UnitMovement : NetworkBehaviour
 
     #region Server
 
+    public override void OnStartServer()
+    {
+        UnitBase.ServerOnPlayerDie += ServerHandleGameOver;
+    }
+
+    public override void OnStopServer()
+    {
+        UnitBase.ServerOnPlayerDie -= ServerHandleGameOver;
+    }
+
+    private void ServerHandleGameOver(int connectionID)
+    {
+        if (connectionToClient.connectionId != connectionID) { return; }
+
+        agent.ResetPath();
+    }
     [ServerCallback]
     private void Update()
     {

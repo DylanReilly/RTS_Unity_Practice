@@ -13,6 +13,13 @@ public class UnitCommandHandler : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+
+        GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
+    }
+
+    private void OnDestroy()
+    {
+        GameOverHandler.ClientOnGameOver -= ClientHandleGameOver;
     }
 
     //Update is called automatically every frame by unity
@@ -63,5 +70,11 @@ public class UnitCommandHandler : MonoBehaviour
         {
             unit.getTargeter().CmdSetTarget(target.gameObject);
         }
+    }
+
+    private void ClientHandleGameOver(string winnerName)
+    {
+        //Disables this script, which in turn disables the update loop and stops player interacting
+        enabled = false;
     }
 }
