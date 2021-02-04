@@ -5,6 +5,8 @@ using Mirror;
 
 public class RTSPlayer : NetworkBehaviour
 {
+    [SerializeField] private Building[] buildings = new Building[0];
+
     private List<Unit> myUnits = new List<Unit>();
     private List<Building> myBuildings = new List<Building>();
 
@@ -37,6 +39,30 @@ public class RTSPlayer : NetworkBehaviour
         Unit.ServerOnUnitDespawned -= ServerhandleUnitDespawned;
         Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
         Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
+    }
+
+    [Command]
+    public void CmdTryPlaceBuilding(int buildingId, Vector3 point)
+    {
+        Building buildingToPlace = null;
+        //Loop over the list of buildings for matching ID
+        foreach (Building building in buildings)
+        {
+            if (building.GetId() == buildingId)
+            {
+                buildingToPlace = building;
+                //When building is found exit the loop
+                break;
+            }
+        }
+        if (buildingToPlace == null) { return; }
+
+        //Create the instance of the building
+        GameObject buildingInstance = 
+            Instantiate(buildingToPlace.gameObject, point, buildingToPlace.transform.rotation);
+
+        //Spawn the building on the network and give ownership to the player
+        NetworkServer.Spawn(buildingInstance, connectionToClient);
     }
 
     //Adds unit to specific players list
