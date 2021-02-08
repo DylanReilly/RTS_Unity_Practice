@@ -32,6 +32,7 @@ public class RTSPlayer : NetworkBehaviour
         return resources;
     }
 
+    [Server]
     public void SetResources(int newResources)
     {
         resources = newResources;
