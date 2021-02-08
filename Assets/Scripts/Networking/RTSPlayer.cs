@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public class RTSPlayer : NetworkBehaviour
 {
     [SerializeField] private Building[] buildings = new Building[0];
+
+    //Hook is used in syncvars, Whenever the variable is changed the hooked method is called
+    [SyncVar(hook = nameof(ClientHandleResourcesUpdated))] private int resources = 500;
+    public event Action<int> ClientOnResourcesUpdated;
+
 
     private List<Unit> myUnits = new List<Unit>();
     private List<Building> myBuildings = new List<Building>();
@@ -19,6 +25,16 @@ public class RTSPlayer : NetworkBehaviour
     public List<Building> GetMyBuildings()
     {
         return myBuildings;
+    }
+
+    public int getResources()
+    {
+        return resources;
+    }
+
+    public void SetResources(int newResources)
+    {
+        resources = newResources;
     }
 
     #region Server
@@ -149,6 +165,11 @@ public class RTSPlayer : NetworkBehaviour
     private void AuthorityHandleBuildingDespawned(Building building)
     {
         myBuildings.Remove(building);
+    }
+
+    private void ClientHandleResourcesUpdated(int oldResource, int newResources)
+    {
+        ClientOnResourcesUpdated?.Invoke(newResources);
     }
 
     #endregion
