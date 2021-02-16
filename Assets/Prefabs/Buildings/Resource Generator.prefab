@@ -157,6 +157,25 @@ MonoBehaviour:
   health: {fileID: 4901879033489005523}
   resourcesPerInterval: 10
   interval: 2
+--- !u!114 &8284322776596563811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539745189229627243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdd52a6536680714d8445c60015cf00b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  colorRenderers:
+  - {fileID: 8464356814693799878}
+  - {fileID: 2991717829685540822}
+  - {fileID: 2906738727441705395}
+  - {fileID: 2770313102902599154}
 --- !u!1001 &2910661803452609926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -237,6 +256,26 @@ PrefabInstance:
 --- !u!1 &5104787740306287559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7976831628514074177, guid: cbedc8fc3e7e03a4aa5113ecec799752, type: 3}
+  m_PrefabInstance: {fileID: 2910661803452609926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8464356814693799878 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6706933863734321728, guid: cbedc8fc3e7e03a4aa5113ecec799752, type: 3}
+  m_PrefabInstance: {fileID: 2910661803452609926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2991717829685540822 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 135117879099834960, guid: cbedc8fc3e7e03a4aa5113ecec799752, type: 3}
+  m_PrefabInstance: {fileID: 2910661803452609926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2906738727441705395 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 14196919641283637, guid: cbedc8fc3e7e03a4aa5113ecec799752, type: 3}
+  m_PrefabInstance: {fileID: 2910661803452609926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2770313102902599154 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1015172952561920116, guid: cbedc8fc3e7e03a4aa5113ecec799752, type: 3}
   m_PrefabInstance: {fileID: 2910661803452609926}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7352417971161863217

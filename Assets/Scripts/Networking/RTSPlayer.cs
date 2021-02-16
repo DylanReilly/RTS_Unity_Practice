@@ -14,7 +14,7 @@ public class RTSPlayer : NetworkBehaviour
     [SyncVar(hook = nameof(ClientHandleResourcesUpdated))] private int resources = 500;
     public event Action<int> ClientOnResourcesUpdated;
 
-
+    private Color teamColor = new Color();
     private List<Unit> myUnits = new List<Unit>();
     private List<Building> myBuildings = new List<Building>();
 
@@ -22,6 +22,11 @@ public class RTSPlayer : NetworkBehaviour
     public List<Unit> GetMyUnits()
     {
         return myUnits;
+    }
+
+    public Color GetTeamColor()
+    {
+        return (teamColor);
     }
 
     public List<Building> GetMyBuildings()
@@ -59,12 +64,6 @@ public class RTSPlayer : NetworkBehaviour
         return false;
     }
 
-    [Server]
-    public void SetResources(int newResources)
-    {
-        resources = newResources;
-    }
-
     #region Server
 
     //subscribes to events, meaning it will listen and react to these events
@@ -83,6 +82,18 @@ public class RTSPlayer : NetworkBehaviour
         Unit.ServerOnUnitDespawned -= ServerhandleUnitDespawned;
         Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
         Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
+    }
+
+    [Server]
+    public void SetTeamColor(Color newTeamColor)
+    {
+        teamColor = newTeamColor;
+    }
+
+    [Server]
+    public void SetResources(int newResources)
+    {
+        resources = newResources;
     }
 
     [Command]
