@@ -1547,10 +1547,14 @@ PrefabInstance:
     - target: {fileID: 506234480954521757, guid: 8715702f1966c6942b92ffec62b9afa2, type: 3}
       propertyPath: building
       value: 
-      objectReference: {fileID: 2551235402263250353, guid: c0033f8d2ed9c9d4e87f74ef2bacfad3, type: 3}
+      objectReference: {fileID: 6549397529949173410, guid: 75f912afcf400334d924dacfd1858fae, type: 3}
     - target: {fileID: 723128902663885393, guid: 8715702f1966c6942b92ffec62b9afa2, type: 3}
       propertyPath: m_Name
       value: BuildingDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 1681908488754454035, guid: 8715702f1966c6942b92ffec62b9afa2, type: 3}
+      propertyPath: m_Name
+      value: Light Tank Spawner Button
       objectReference: {fileID: 0}
     - target: {fileID: 2009567856274318636, guid: 8715702f1966c6942b92ffec62b9afa2, type: 3}
       propertyPath: m_RootOrder
