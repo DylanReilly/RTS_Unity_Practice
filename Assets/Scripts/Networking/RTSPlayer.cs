@@ -13,11 +13,20 @@ public class RTSPlayer : NetworkBehaviour
 
     //Hook is used in syncvars, Whenever the variable is changed the hooked method is called
     [SyncVar(hook = nameof(ClientHandleResourcesUpdated))] private int resources = 500;
+    [SyncVar(hook = nameof(AuthorityHandlePartyOwnerStateUpdated))]
+    private bool isPartyOwner = false;
+
     public event Action<int> ClientOnResourcesUpdated;
+    public static event Action<bool> AuthorityOnPartyOwnerStateUpdated;
 
     private Color teamColor = new Color();
     private List<Unit> myUnits = new List<Unit>();
     private List<Building> myBuildings = new List<Building>();
+
+    public bool GetIsPartyOwner()
+    {
+        return isPartyOwner;
+    }
 
     //Returns a list of the players units
     public List<Unit> GetMyUnits()
@@ -91,6 +100,12 @@ public class RTSPlayer : NetworkBehaviour
     }
 
     [Server]
+    public void SetPartyOwner(bool state)
+    {
+        isPartyOwner = state;
+    }
+
+    [Server]
     public void SetTeamColor(Color newTeamColor)
     {
         teamColor = newTeamColor;
@@ -101,6 +116,15 @@ public class RTSPlayer : NetworkBehaviour
     {
         resources = newResources;
     }
+
+    [Command]
+    public void CmdStartGame()
+    {
+        if (!isPartyOwner) { return; }
+
+        ((RTSNetworkManager)NetworkManager.singleton).StartGame();
+    }
+
 
     [Command]
     public void CmdTryPlaceBuilding(int buildingId, Vector3 point)
@@ -188,16 +212,33 @@ public class RTSPlayer : NetworkBehaviour
         Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
     }
 
+    public override void OnStartClient()
+    {
+        if (NetworkServer.active) { return; }
+        ((RTSNetworkManager)NetworkManager.singleton).Players.Add(this);
+    }
+
     //Unsubscribe from events
     public override void OnStopClient()
     {
         //Ignore if you are the server
-        if (!isClientOnly || !hasAuthority) { return; }
+        if (!isClientOnly) { return; }
+
+        ((RTSNetworkManager)NetworkManager.singleton).Players.Remove(this);
+
+        if (!hasAuthority) { return; }
 
         Unit.AuthorityOnUnitSpawned -= AuthorityhandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned -= AuthorityhandleUnitDespawned;
         Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
         Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
+    }
+
+    private void AuthorityHandlePartyOwnerStateUpdated(bool oldState, bool newState)
+    {
+        if (!hasAuthority) { return; }
+
+        AuthorityOnPartyOwnerStateUpdated?.Invoke(newState);
     }
 
     //Add unit to player list
