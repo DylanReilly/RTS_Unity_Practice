@@ -24,6 +24,8 @@ public class UnitSelectionHandler : MonoBehaviour
         //set camera to be main camera for raycasts
         mainCamera = Camera.main;
 
+        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+
         //Subscribe to events
         Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawn;
         //This event is used to stop a dead player selecting units
@@ -40,12 +42,6 @@ public class UnitSelectionHandler : MonoBehaviour
 
     private void Update()
     {
-        //TODO
-        if (player == null)
-        {
-            player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-        }
-
         //Start drag select when button is pressed
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
