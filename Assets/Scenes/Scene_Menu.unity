@@ -1651,6 +1651,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 951593572344000003, guid: 29f683e87fbb3294986418b3486f556f, type: 3}
+      propertyPath: playerSpawnMethod
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 951593572344000006, guid: 29f683e87fbb3294986418b3486f556f, type: 3}
       propertyPath: m_Name
       value: NetworkManager
@@ -2017,6 +2021,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobbyUI: {fileID: 689337408}
   startGamebutton: {fileID: 388631640}
+  playerNameText:
+  - {fileID: 993653003}
+  - {fileID: 300582206}
+  - {fileID: 1608789982}
+  - {fileID: 188355205}
 --- !u!1 &993653001
 GameObject:
   m_ObjectHideFlags: 0
