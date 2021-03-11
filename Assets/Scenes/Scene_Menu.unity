@@ -1600,6 +1600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   landingPagePanel: {fileID: 506004088}
+  useSteam: 1
 --- !u!1001 &629834061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1649,10 +1650,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 951593572344000002, guid: 29f683e87fbb3294986418b3486f556f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 951593572344000003, guid: 29f683e87fbb3294986418b3486f556f, type: 3}
-      propertyPath: playerSpawnMethod
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 951593572344000006, guid: 29f683e87fbb3294986418b3486f556f, type: 3}
